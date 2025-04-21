@@ -47,7 +47,7 @@ POST /log – Create audit log entry
 GET /logs – Retrieve filtered logs by service or user ID
 
 ### Database Setup
-# The system uses two MySQL databases:
+### The system uses two MySQL databases:
 
 university_db – Stores subscription and payment data.
 
