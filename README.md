@@ -17,21 +17,20 @@ A microservice-based parking management system that handles subscription managem
 - **Docker + Docker Compose**
 
 ---
-Build and start the Docker containers:
+### Build and start the Docker containers:
 
-bash
-Copy
-Edit
+```bash
 docker-compose up --build
-Access:
+```
+# Access:
 Subscription Service: http://localhost:5003
 
 Log Microservice: http://localhost:8001
 
 Swagger Documentation: http://localhost:5003/docs
 
-API Endpoints
-Subscription Service (Port 5003)
+### API Endpoints
+# Subscription Service (Port 5003)
 GET / – Check service status
 
 POST /create-subscription – Create a new parking subscription
@@ -40,24 +39,22 @@ POST /create-payment – Initialize payment for a subscription
 
 POST /complete-payment – Complete a pending payment transaction
 
-Log Microservice (Port 8001)
+# Log Microservice (Port 8001)
 GET /health – Check service health
 
 POST /log – Create audit log entry
 
 GET /logs – Retrieve filtered logs by service or user ID
 
-Database Setup
-The system uses two MySQL databases:
+### Database Setup
+# The system uses two MySQL databases:
 
 university_db – Stores subscription and payment data.
 
 audit_logs_db – Stores comprehensive system audit logs.
 
 Directory Structure
-bash
-Copy
-Edit
+```bash
 .
 ├── docker-compose.yml
 ├── db-init/                    
