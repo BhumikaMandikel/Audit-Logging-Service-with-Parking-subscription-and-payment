@@ -1,0 +1,63 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ijwtbpoys
+      MYSQL_DATABASE: university_db
+    ports:
+      - "3309:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db-init:/docker-entrypoint-initdb.d
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pijwtbpoys"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  log_microservice:
+    build:
+      context: ./log_microservice
+    container_name: log_microservice
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8001:8001"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: audit_logs_db
+      DB_USER: root
+      DB_PASS: ijwtbpoys
+    networks:
+      - app_network
+    restart: on-failure
+
+  subscription_service:
+    build:
+      context: ./subscription_service
+    container_name: subscription_service
+    ports:
+      - "5003:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+      log_microservice:
+        condition: service_started
+    networks:
+      - app_network
+
+
+volumes:
+  db_data:
+
+networks:
+  app_network:
+    driver: bridge
